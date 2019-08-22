@@ -4,7 +4,11 @@ const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const mongoose = require('mongoose')
+const config = require('./utils/config')
 
+
+app.use(cors())
+app.use(bodyParser.json())
 
 const blogSchema = mongoose.Schema({
     title: String,
@@ -15,11 +19,12 @@ const blogSchema = mongoose.Schema({
 
 const Blog = mongoose.model('Blog', blogSchema)
 
-const mongoUrl = 'mongodb://localhost/bloglist'
-mongoose.connect(mongoUrl, {useNewUrlParser: true})
+mongoose.connect(config.MONGODB_URI, {useNewUrlParser: true}).then(()=>{
+    console.log('connected to MongoDB')
+}).catch((error) => {
+    console.log('error connection to MongoDB: ', error.message)
+})
 
-app.use(cors())
-app.use(bodyParser.json())
 
 app.get('/api/blogs', (request, response) => {
     Blog.find({}).then(blogs => {
@@ -35,7 +40,6 @@ app.post('/api/blogs', (request, response) => {
     })
 })
 
-const PORT = 3003
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`)
+app.listen(config.PORT, () => {
+    console.log(`Server running on port ${config.PORT}`)
 })
