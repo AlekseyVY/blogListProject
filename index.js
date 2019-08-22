@@ -1,25 +1,9 @@
 const http = require('http')
-const express = require('express')
-const app = express()
-const bodyParser = require('body-parser')
-const cors = require('cors')
-const mongoose = require('mongoose')
+const app = require('./app')
 const config = require('./utils/config')
-const blogRouter = require('./controllers/blogs')
 
+const server = http.createServer(app)
 
-app.use(cors())
-app.use(bodyParser.json())
-app.use('/api/blogs',blogRouter)
-
-mongoose.connect(config.MONGODB_URI, {useNewUrlParser: true}).then(()=>{
-    console.log('connected to MongoDB')
-}).catch((error) => {
-    console.log('error connection to MongoDB: ', error.message)
-})
-
-
-
-app.listen(config.PORT, () => {
+server.listen(config.PORT, () => {
     console.log(`Server running on port ${config.PORT}`)
 })
