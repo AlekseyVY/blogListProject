@@ -17,4 +17,5 @@ mongoose.connect(config.MONGODB_URI, {useNewUrlParser: true}).then(()=>{
     console.log('error connection to MongoDB: ', error.message)
 })
 
+
 module.exports = app
