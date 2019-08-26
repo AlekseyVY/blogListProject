@@ -15,7 +15,6 @@ const totalLikes = (blogs) => {
 const favoriteBlog = (blogs) => {
     let mostFamous = 0
 
-
 }
 
 
