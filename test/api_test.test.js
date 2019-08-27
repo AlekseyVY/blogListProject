@@ -41,6 +41,22 @@ test('POST is working as intended', async () => {
     })
 })
 
+test('check id variable exist', async () => {
+    const response = await api.get('/api/blogs')
+    expect(response.body[0].id).toBeDefined()
+    }
+)
+
+test('blog can be deleted', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogsToDelete = blogsAtStart[0]
+
+    await api.delete(`/api/blogs/${blogsToDelete.id}`).expect(204)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd.length).toBe(helper.initialBlog.length -1)
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })
